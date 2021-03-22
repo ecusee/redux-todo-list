@@ -5,3 +5,6 @@
   
 >
 <a class="github-button" href="https://redux-todo-list-app.herokuapp.com/" aria-label="App Demo">App Demo</a>
+
+<!-- Place this tag where you want the button to render. -->
+<a class="github-button" href="https://github.com/ntkme" aria-label="Follow @ntkme on GitHub">Follow @ntkme</a>
