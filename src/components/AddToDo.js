@@ -1,20 +1,22 @@
 import React, { useState,useEffect } from 'react'
-import { bindActionCreators } from 'redux';
+import {useDispatch, useSelector} from "react-redux";
 import TodoItem from './TodoItem';
-import * as todoActions from '../redux/actions/todoActions';
-import { connect } from 'react-redux';
+import {ADD_TODO_ITEM} from "../redux/actions/actionTypes";
 
-const AddToDo = ({ actions, todoListState }) => {
+const AddToDo = () => {
+    const dispatch = useDispatch();
     const [todoList, setToDoList] = useState([]);
     const [todo, setToDo] = useState();
 
     const handleAddToDo = () => {
-        actions.addTodoItem(todo);
+        dispatch({ type: ADD_TODO_ITEM, payload: todo })
         setToDo('')
     }
 
+    const todoListState = useSelector(state => state.todoReducer);
+
     useEffect(() => {
-        setToDoList(todoListState)
+        setToDoList(todoListState);
     },[todoListState])
     
 
@@ -22,30 +24,15 @@ const AddToDo = ({ actions, todoListState }) => {
         <>
             <div className="add-todo">
                 <input className="add-todo-input" value={todo} onChange={e => setToDo(e.target.value)} />
-                <button className="add-todo-btn" onClick={() => handleAddToDo()}>Add</button>
+                <button className="add-todo-btn" onClick={handleAddToDo}>Add</button>
             </div>
             <div className="todos">
                 {todoList.map((todo, index) => (
-                    <TodoItem key={index} todo={todo} index={index} removeToDoItem={actions.removeTodoItem} />
+                    <TodoItem key={index} todo={todo} index={index} />
                 ))}
             </div>
         </>
     )
 }
 
-const mapStateToProps = (state) => {
-    return {
-        todoListState: state.todoReducer
-    }
-}
-
-const mapDispatchToProps = (dispatch) => {
-    return {
-        actions: {
-            addTodoItem: bindActionCreators(todoActions.addTodoItem, dispatch),
-            removeTodoItem: bindActionCreators(todoActions.removeTodoItem, dispatch)
-        }
-    }
-} 
-
-export default connect(mapStateToProps,mapDispatchToProps)(AddToDo)
+export default AddToDo;
